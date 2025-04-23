@@ -1,8 +1,17 @@
 //Shows when you click on a project in the sidebar
 //Displays the project's details
 //Has a DELETE button
+//Has a TASKS button
 
-export default function SelectedProject({ project, onDelete }) {
+import Tasks from "./Tasks";
+
+export default function SelectedProject({
+  project,
+  onDelete,
+  tasks,
+  onAddTask,
+  onDeleteTask,
+}) {
   const formattedDate = new Date(project.dueDate).toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
@@ -30,7 +39,7 @@ export default function SelectedProject({ project, onDelete }) {
           {project.description}
         </p>
       </header>
-      TASKS
+      <Tasks tasks={tasks} onAdd={onAddTask} onDelete={onDeleteTask} />
     </div>
   );
 }
