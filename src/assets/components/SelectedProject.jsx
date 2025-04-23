@@ -20,7 +20,7 @@ export default function SelectedProject({ project, onDelete }) {
           </h1>
           <button
             className="text-stone-600 hover:text-stone-950"
-            onClick={() => onDelete}
+            onClick={onDelete}
           >
             Delete
           </button>
