@@ -19,6 +19,7 @@ export default function SelectedProject({
   });
 
   console.log(formattedDate);
+  console.log("Check tasks.projectId from SelectedProject", tasks.projectId);
 
   return (
     <div className="w-[35rem] mt-16">
@@ -39,7 +40,12 @@ export default function SelectedProject({
           {project.description}
         </p>
       </header>
-      <Tasks tasks={tasks} onAdd={onAddTask} onDelete={onDeleteTask} />
+      <Tasks
+        tasks={tasks}
+        onAdd={onAddTask}
+        onDelete={onDeleteTask}
+        projectId={project.id}
+      />
     </div>
   );
 }

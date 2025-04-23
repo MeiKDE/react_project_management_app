@@ -3,6 +3,7 @@ import ProjectSidebar from "./assets/components/ProjectSideBar";
 import NewProject from "./assets/components/NewProject";
 import NoProjectSelected from "./assets/components/NoProjectSelected";
 import SelectedProject from "./assets/components/SelectedProject";
+
 function App() {
   // STATE: uses a special technique with selectedProjectId to control what's shown:
   // undefined: No project selected (show welcome screen)
@@ -15,6 +16,7 @@ function App() {
   });
 
   function handleAddTask(text) {
+    console.log("check text value ", text);
     setProjectsState((prevProjectsState) => {
       const taskId = Math.random();
       const newTask = {
@@ -93,6 +95,7 @@ function App() {
   const selectedProject = projectsState.projects.find(
     (project) => project.id === projectsState.selectedProjectId
   );
+  console.log("check selectedProject", selectedProject);
 
   let content = (
     <SelectedProject

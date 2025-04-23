@@ -10,12 +10,12 @@ export default function NewTask({ tasks, onAdd, onDelete }) {
   }
 
   function handleAddTask() {
+    if (enteredTask.trim() === "") {
+      alert("Please enter a task");
+      return;
+    }
     onAdd(enteredTask);
-    setEnteredTask(""); //clear the input field
-    const newTask = {
-      id: Math.random().toString(),
-      title: enteredTask,
-    };
+    console.log(enteredTask);
   }
 
   return (
