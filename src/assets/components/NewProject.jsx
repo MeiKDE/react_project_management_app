@@ -5,15 +5,14 @@
 import { useRef } from "react";
 import Input from "./Input";
 import Modal from "./Modal";
+import { useContext } from "react";
+import { ProjectManagementContext } from "../../store/project-management-context";
 
-export default function NewProject({
-  onCancel,
-  onSave,
-  label,
-  textarea,
-  date,
-  ...props
-}) {
+export default function NewProject({ label, textarea, date, ...props }) {
+  const { handleSaveProject, handleCancelProject } = useContext(
+    ProjectManagementContext
+  );
+
   const modalRef = useRef();
   const titleRef = useRef();
   const descriptionRef = useRef();
@@ -32,8 +31,7 @@ export default function NewProject({
       modalRef.current.open();
       return;
     }
-
-    onSave(formData);
+    handleSaveProject(formData);
   }
 
   return (
@@ -53,7 +51,7 @@ export default function NewProject({
         <menu className="flex items-center justify-end gap-4 my-4">
           <li>
             <button
-              onClick={onCancel}
+              onClick={handleCancelProject}
               className="text-stone-800 hover:text-stone-950"
             >
               Cancel

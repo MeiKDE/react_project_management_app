@@ -1,20 +1,23 @@
 import Input from "./Input";
 import Button from "./Button";
 import { useState } from "react";
+import { useContext } from "react";
+import { ProjectManagementContext } from "../../store/project-management-context";
 
-export default function NewTask({ tasks, onAdd, onDelete }) {
+export default function NewTask({}) {
+  const { handleAddTask } = useContext(ProjectManagementContext);
   const [enteredTask, setEnteredTask] = useState("");
 
   function handleChange(event) {
     setEnteredTask(event.target.value);
   }
 
-  function handleAddTask() {
+  function handleAddTaskWrapper() {
     if (enteredTask.trim() === "") {
       alert("Please enter a task");
       return;
     }
-    onAdd(enteredTask);
+    handleAddTask(enteredTask);
     console.log(enteredTask);
   }
 
@@ -28,7 +31,7 @@ export default function NewTask({ tasks, onAdd, onDelete }) {
         value={enteredTask}
       />
       <Button
-        onClick={handleAddTask}
+        onClick={handleAddTaskWrapper}
         className="text-stone-700 hover:text-stone-950 px-4 "
       >
         Add Task
