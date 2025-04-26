@@ -2,8 +2,7 @@ import ProjectSidebar from "./assets/components/ProjectSidebar";
 import NoProjectPage from "./assets/components/NoProjectPage";
 import SelectedProjectPage from "./assets/components/SelectedProjectPage";
 import NewProjectPage from "./assets/components/NewProjectPage";
-import React, { useState } from "react";
-import { prependListener } from "process";
+import { useState } from "react";
 
 // Define an interface for project data
 interface ProjectData {
@@ -16,7 +15,7 @@ export default function App() {
   const [projectsState, setProjectState] = useState({
     projectIndicator: undefined as undefined | null | string,
     projects: [] as Array<ProjectData & { id: number }>,
-    tasks: [] as any[],
+    tasks: [] as [],
   });
 
   // for New Project page
@@ -27,7 +26,7 @@ export default function App() {
     }));
   }
 
-  // for New Project page
+  // for New Project & Project Sidebar page
   function handleSaveProject(projectData: ProjectData) {
     setProjectState((prevProjectState) => {
       const newProject = {
@@ -53,7 +52,10 @@ export default function App() {
   return (
     <div className="flex flex-row h-screen">
       <aside className="border-red-500 border my-4 basis-1/5 h-full bg-black pt-4 ">
-        <ProjectSidebar addProject={handleAddProject} />
+        <ProjectSidebar
+          addProject={handleAddProject}
+          currentProjectState={projectsState}
+        />
       </aside>
 
       <main className="border-blue-500 border my-4 basis-4/5 h-full">

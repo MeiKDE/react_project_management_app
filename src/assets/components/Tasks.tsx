@@ -1,8 +1,23 @@
-export default function Tasks() {
+interface ProjectData {
+  title: string;
+  description: string;
+  dueDate: Date;
+}
+
+interface TasksProps {
+  currentProjectState: {
+    projectIndicator: undefined | null | string;
+    projects: Array<ProjectData & { id: number }>;
+    tasks: [];
+  };
+}
+
+export default function Tasks({ currentProjectState }: TasksProps) {
   return (
-    <div className="border-green-300">
-      <p> if list is empty then </p>
-      <p> This project doesn't have any task yet</p>
-    </div>
+    <ul className="border-green-300">
+      {currentProjectState.projects.map((project) => (
+        <li key={project.id}></li>
+      ))}
+    </ul>
   );
 }
