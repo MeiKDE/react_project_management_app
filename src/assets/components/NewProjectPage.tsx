@@ -40,6 +40,7 @@ const NewProject = forwardRef(function NewProjectPage(
     };
 
     saveProject(newProjectData);
+    console.log("saved newProjectData", newProjectData);
   };
 
   return (
@@ -58,6 +59,7 @@ const NewProject = forwardRef(function NewProjectPage(
         placeholder="project title"
         ref={titleRef}
         textarea={false}
+        type="text"
       />
       <Input
         label="Description"
@@ -70,6 +72,7 @@ const NewProject = forwardRef(function NewProjectPage(
         placeholder="project due date"
         ref={dueDateRef}
         textarea={false}
+        type="date"
       />
     </div>
   );

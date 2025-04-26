@@ -4,6 +4,8 @@ interface InputProps {
   label: string;
   placeholder: string;
   textarea: boolean;
+  type?: "text" | "date" | "email" | "password" | "number"; // Define specific allowed types
+  ref?: ForwardedRef<HTMLInputElement | HTMLTextAreaElement>;
 }
 
 const Input = forwardRef(function Input(
@@ -28,6 +30,7 @@ const Input = forwardRef(function Input(
           ref={ref as ForwardedRef<HTMLInputElement>}
           placeholder={props.placeholder}
           className={inputClassName}
+          type={props.type}
         ></input>
       )}
     </div>

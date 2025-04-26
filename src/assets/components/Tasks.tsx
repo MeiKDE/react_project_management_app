@@ -16,7 +16,7 @@ export default function Tasks({ currentProjectState }: TasksProps) {
   return (
     <ul className="border-green-300">
       {currentProjectState.projects.map((project) => (
-        <li key={project.id}></li>
+        <li key={project.id}>{project.title}</li>
       ))}
     </ul>
   );
