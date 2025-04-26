@@ -7,10 +7,11 @@ interface NewProjectPageProps {
     description: string;
     dueDate: Date;
   }) => void;
+  cancelProject: () => void;
 }
 
 const NewProject = forwardRef(function NewProjectPage(
-  { saveProject }: NewProjectPageProps,
+  { saveProject, cancelProject }: NewProjectPageProps,
   ref: ForwardedRef<HTMLDivElement>
 ) {
   const titleRef = useRef<HTMLInputElement>(null);
@@ -44,7 +45,9 @@ const NewProject = forwardRef(function NewProjectPage(
   return (
     <div ref={ref}>
       <div>
-        <button type="button">Cancel</button>
+        <button type="button" onClick={cancelProject}>
+          Cancel
+        </button>
         <button type="button" onClick={handleSave}>
           Save
         </button>

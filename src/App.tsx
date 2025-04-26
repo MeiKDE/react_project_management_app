@@ -3,6 +3,7 @@ import NoProjectPage from "./assets/components/NoProjectPage";
 import SelectedProjectPage from "./assets/components/SelectedProjectPage";
 import NewProjectPage from "./assets/components/NewProjectPage";
 import React, { useState } from "react";
+import { prependListener } from "process";
 
 // Define an interface for project data
 interface ProjectData {
@@ -18,6 +19,7 @@ export default function App() {
     tasks: [] as any[],
   });
 
+  // for New Project page
   function handleAddProject() {
     setProjectState((prevProjectState) => ({
       ...prevProjectState,
@@ -25,7 +27,7 @@ export default function App() {
     }));
   }
 
-  // Add type to projectData parameter
+  // for New Project page
   function handleSaveProject(projectData: ProjectData) {
     setProjectState((prevProjectState) => {
       const newProject = {
@@ -40,6 +42,14 @@ export default function App() {
     });
   }
 
+  // for New Project page
+  function handleCancelProject() {
+    setProjectState((prev) => ({
+      ...prev,
+      projectIndicator: undefined,
+    }));
+  }
+
   return (
     <div className="flex flex-row h-screen">
       <aside className="border-red-500 border my-4 basis-1/5 h-full bg-black pt-4 ">
@@ -50,7 +60,10 @@ export default function App() {
         {projectsState.projectIndicator === undefined ? (
           <NoProjectPage addProject={handleAddProject} />
         ) : projectsState.projectIndicator === null ? (
-          <NewProjectPage saveProject={handleSaveProject} />
+          <NewProjectPage
+            saveProject={handleSaveProject}
+            cancelProject={handleCancelProject}
+          />
         ) : (
           <SelectedProjectPage />
         )}
