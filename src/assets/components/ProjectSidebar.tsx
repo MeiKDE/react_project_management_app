@@ -1,10 +1,10 @@
 import Button from "./Button";
 
 interface ProjectSidebarProps {
-  AddProject: () => void;
+  addProject: () => void;
 }
 
-export default function ProjectSidebar({ AddProject }: ProjectSidebarProps) {
+export default function ProjectSidebar({ addProject }: ProjectSidebarProps) {
   return (
     <div>
       <h2 className="text-white text-center font-sans font-bold text-lg">
@@ -12,7 +12,7 @@ export default function ProjectSidebar({ AddProject }: ProjectSidebarProps) {
       </h2>
 
       <div className="flex justify-center my-5">
-        <Button onClick={AddProject}>+ Add Project </Button>
+        <Button onClick={addProject}>+ Add Project </Button>
       </div>
     </div>
   );
