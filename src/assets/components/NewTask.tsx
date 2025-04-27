@@ -1,6 +1,20 @@
 import Tasks from "./Tasks";
 
-export default function NewTask() {
+interface ProjectData {
+  title: string;
+  description: string;
+  dueDate: string;
+}
+
+interface NewTaskProp {
+  projectsState: {
+    projectIndicator: undefined | null | string;
+    projects: Array<ProjectData & { id: number }>;
+    tasks: [];
+  };
+}
+
+export default function NewTask({ projectsState }: NewTaskProp) {
   return (
     <div className="border-red-300">
       <h1> Tasks</h1>
@@ -12,7 +26,7 @@ export default function NewTask() {
         />
         <button> Add Task</button>
       </div>
-      <Tasks />
+      <Tasks projectState={projectsState} />
     </div>
   );
 }

@@ -8,7 +8,7 @@ import { useState } from "react";
 interface ProjectData {
   title: string;
   description: string;
-  dueDate: Date;
+  dueDate: string;
 }
 
 export default function App() {
@@ -43,9 +43,18 @@ export default function App() {
 
   // for New Project page
   function handleCancelProject() {
-    setProjectState((prev) => ({
-      ...prev,
+    setProjectState((prevProjectState) => ({
+      ...prevProjectState,
       projectIndicator: undefined,
+    }));
+  }
+
+  // for Project Sidebar page
+
+  function handleSelectProject(projectId: number) {
+    setProjectState((prevProjectState) => ({
+      ...prevProjectState,
+      id: projectId,
     }));
   }
 
@@ -54,7 +63,8 @@ export default function App() {
       <aside className="border-red-500 border my-4 basis-1/5 h-full bg-black pt-4 ">
         <ProjectSidebar
           addProject={handleAddProject}
-          currentProjectState={projectsState}
+          projectsState={projectsState}
+          selectedProject={handleSelectProject}
         />
       </aside>
 
@@ -67,7 +77,7 @@ export default function App() {
             cancelProject={handleCancelProject}
           />
         ) : (
-          <SelectedProjectPage />
+          <SelectedProjectPage projectsState={projectsState} />
         )}
       </main>
     </div>

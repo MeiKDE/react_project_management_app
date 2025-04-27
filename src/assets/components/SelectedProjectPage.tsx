@@ -1,6 +1,20 @@
 import NewTask from "./NewTask";
 
-export default function SelectedProjectPage() {
+interface ProjectData {
+  title: string;
+  description: string;
+  dueDate: string;
+}
+
+interface NewTaskProp {
+  projectsState: {
+    projectIndicator: undefined | null | string;
+    projects: Array<ProjectData & { id: number }>;
+    tasks: [];
+  };
+}
+
+export default function SelectedProjectPage({ projectsState }: NewTaskProp) {
   return (
     <>
       <div>
@@ -8,7 +22,8 @@ export default function SelectedProjectPage() {
         <button>Delete</button>
       </div>
       <h2>Project Description</h2>
-      <NewTask />
+
+      <NewTask projectsState={projectsState} />
     </>
   );
 }

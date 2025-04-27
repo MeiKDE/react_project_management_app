@@ -5,7 +5,7 @@ interface NewProjectPageProps {
   saveProject: (projectData: {
     title: string;
     description: string;
-    dueDate: Date;
+    dueDate: string;
   }) => void;
   cancelProject: () => void;
 }
@@ -36,7 +36,7 @@ const NewProject = forwardRef(function NewProjectPage(
     const newProjectData = {
       title: enteredTitle,
       description: enteredDescription,
-      dueDate: new Date(enteredDueDate),
+      dueDate: enteredDueDate,
     };
 
     saveProject(newProjectData);

@@ -1,25 +1,28 @@
 import Button from "./Button";
-import Tasks from "./Tasks";
 
 interface ProjectData {
   title: string;
   description: string;
-  dueDate: Date;
+  dueDate: string;
 }
 
 interface ProjectSidebarProps {
   addProject: () => void;
-  currentProjectState: {
+  projectsState: {
     projectIndicator: undefined | null | string;
     projects: Array<ProjectData & { id: number }>;
     tasks: [];
   };
+  selectedProject: (projectId: number) => void;
 }
 
 export default function ProjectSidebar({
   addProject,
-  currentProjectState,
+  projectsState,
+  selectedProject,
 }: ProjectSidebarProps) {
+  console.log("check projects array", projectsState.projects);
+
   return (
     <div>
       <h2 className="text-white text-center font-sans font-bold text-lg">
@@ -30,7 +33,21 @@ export default function ProjectSidebar({
         <Button onClick={addProject}>+ Add Project </Button>
       </div>
 
-      <Tasks currentProjectState={currentProjectState} />
+      <ul className="border-green-300">
+        {projectsState.projects && projectsState.projects.length > 0 ? (
+          projectsState.projects.map((project) => (
+            <li
+              onClick={() => selectedProject(project.id)}
+              key={project.id}
+              className="text-white text-center font-sans"
+            >
+              {project.title}
+            </li>
+          ))
+        ) : (
+          <li> No projects available </li>
+        )}
+      </ul>
     </div>
   );
 }
