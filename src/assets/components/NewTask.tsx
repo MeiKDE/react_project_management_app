@@ -26,7 +26,6 @@ export default function NewTask({ projectsState }: NewTaskProp) {
         />
         <button> Add Task</button>
       </div>
-      <Tasks projectState={projectsState} />
     </div>
   );
 }

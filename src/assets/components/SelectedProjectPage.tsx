@@ -1,6 +1,7 @@
 import NewTask from "./NewTask";
 
 interface ProjectData {
+  id: number;
   title: string;
   description: string;
   dueDate: string;

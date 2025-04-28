@@ -12,7 +12,7 @@ interface ProjectData {
 }
 
 export default function App() {
-  const [projectsState, setProjectState] = useState({
+  const [projectsState, setProjectsState] = useState({
     projectIndicator: undefined as undefined | null | string,
     projects: [] as Array<ProjectData & { id: number }>,
     tasks: [] as [],
@@ -20,61 +20,69 @@ export default function App() {
 
   // for New Project page
   function handleAddProject() {
-    setProjectState((prevProjectState) => ({
-      ...prevProjectState,
+    setProjectsState((prevProjectsState) => ({
+      ...prevProjectsState,
       projectIndicator: null,
     }));
   }
 
   // for New Project & Project Sidebar page
   function handleSaveProject(projectData: ProjectData) {
-    setProjectState((prevProjectState) => {
+    setProjectsState((prevProjectsState) => {
       const newProject = {
         ...projectData,
         id: Math.random(),
       };
       return {
-        ...prevProjectState,
+        ...prevProjectsState,
         projectIndicator: undefined, //reset
-        projects: [...prevProjectState.projects, newProject],
+        projects: [...prevProjectsState.projects, newProject],
       };
     });
   }
 
   // for New Project page
   function handleCancelProject() {
-    setProjectState((prevProjectState) => ({
-      ...prevProjectState,
+    setProjectsState((prevProjectsState) => ({
+      ...prevProjectsState,
       projectIndicator: undefined,
     }));
   }
 
   // for Project Sidebar page
-
   function handleSelectProject(projectId: number) {
-    setProjectState((prevProjectState) => ({
-      ...prevProjectState,
-      id: projectId,
+    setProjectsState((prevProjectsState) => ({
+      ...prevProjectsState,
+      projectIndicator: projectId.toString(),
     }));
   }
+
+  // for Project Sidebar page
+  // find the selected project based on projectIndicator
+  // Grab data from projects array
+  const selectedProjectData =
+    projectsState.projects.find(
+      (project) => project.id.toString() === projectsState.projectIndicator
+    ) || null;
 
   return (
     <div className="flex flex-row h-screen">
       <aside className="border-red-500 border my-4 basis-1/5 h-full bg-black pt-4 ">
         <ProjectSidebar
-          addProject={handleAddProject}
+          onAddProject={handleAddProject}
           projectsState={projectsState}
-          selectedProject={handleSelectProject}
+          onSelectProject={handleSelectProject}
+          selectedProjectData={selectedProjectData}
         />
       </aside>
 
       <main className="border-blue-500 border my-4 basis-4/5 h-full">
         {projectsState.projectIndicator === undefined ? (
-          <NoProjectPage addProject={handleAddProject} />
+          <NoProjectPage onAddProject={handleAddProject} />
         ) : projectsState.projectIndicator === null ? (
           <NewProjectPage
-            saveProject={handleSaveProject}
-            cancelProject={handleCancelProject}
+            onSaveProject={handleSaveProject}
+            onCancelProject={handleCancelProject}
           />
         ) : (
           <SelectedProjectPage projectsState={projectsState} />

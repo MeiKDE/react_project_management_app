@@ -2,16 +2,16 @@ import Input from "./Input";
 import { useRef, forwardRef, ForwardedRef } from "react";
 
 interface NewProjectPageProps {
-  saveProject: (projectData: {
+  onSaveProject: (projectData: {
     title: string;
     description: string;
     dueDate: string;
   }) => void;
-  cancelProject: () => void;
+  onCancelProject: () => void;
 }
 
 const NewProject = forwardRef(function NewProjectPage(
-  { saveProject, cancelProject }: NewProjectPageProps,
+  { onSaveProject, onCancelProject }: NewProjectPageProps,
   ref: ForwardedRef<HTMLDivElement>
 ) {
   const titleRef = useRef<HTMLInputElement>(null);
@@ -39,14 +39,14 @@ const NewProject = forwardRef(function NewProjectPage(
       dueDate: enteredDueDate,
     };
 
-    saveProject(newProjectData);
+    onSaveProject(newProjectData);
     console.log("saved newProjectData", newProjectData);
   };
 
   return (
     <div ref={ref}>
       <div>
-        <button type="button" onClick={cancelProject}>
+        <button type="button" onClick={onCancelProject}>
           Cancel
         </button>
         <button type="button" onClick={handleSave}>
