@@ -1,7 +1,7 @@
 import Input from "./Input";
 import { useRef, forwardRef, ForwardedRef } from "react";
 
-interface NewProjectPageProps {
+interface NewProjectProps {
   onSaveProject: (projectData: {
     title: string;
     description: string;
@@ -10,8 +10,8 @@ interface NewProjectPageProps {
   onCancelProject: () => void;
 }
 
-const NewProject = forwardRef(function NewProjectPage(
-  { onSaveProject, onCancelProject }: NewProjectPageProps,
+const NewProject = forwardRef(function NewProject(
+  { onSaveProject, onCancelProject }: NewProjectProps,
   ref: ForwardedRef<HTMLDivElement>
 ) {
   const titleRef = useRef<HTMLInputElement>(null);

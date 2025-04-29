@@ -1,10 +1,10 @@
 import Button from "./Button";
 
-interface NoProjectPageProps {
+interface NoProjectProps {
   onAddProject: () => void;
 }
 
-export default function NoProjectPage({ onAddProject }: NoProjectPageProps) {
+export default function NoProject({ onAddProject }: NoProjectProps) {
   return (
     <div className="flex flex-col items-center text-center gap-2 py-6">
       <img src="./no-projects.png" alt="no project image" className="w-20" />
