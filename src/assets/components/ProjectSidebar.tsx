@@ -11,7 +11,7 @@ interface ProjectSidebarProps {
   projectsState: {
     projectIndicator: undefined | null | string;
     projects: Array<ProjectData & { id: number }>;
-    tasks: [];
+    tasks: Array<{ id: string; text: string; projectId: string }>;
   };
   onSelectProject: (projectId: number) => void;
   selectedProjectData: {

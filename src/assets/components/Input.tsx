@@ -2,35 +2,42 @@ import { forwardRef, ForwardedRef } from "react";
 
 interface InputProps {
   label: string;
-  placeholder: string;
-  textarea: boolean;
-  type?: "text" | "date" | "email" | "password" | "number"; // Define specific allowed types
+  placeholder?: string;
+  textarea?: boolean;
+  type?: string;
+  className?: string;
   ref?: ForwardedRef<HTMLInputElement | HTMLTextAreaElement>;
 }
 
 const Input = forwardRef(function Input(
-  //label is a children, textarea a boolean, and then props
-  { label, textarea, ...props }: InputProps,
+  {
+    label,
+    placeholder,
+    textarea,
+    type = "text",
+    className = "",
+    ...props
+  }: InputProps,
   ref: ForwardedRef<HTMLInputElement | HTMLTextAreaElement>
 ) {
-  const textareaClassName = "w-1/3 h-48 p-2 border rounded";
-  const inputClassName = "w-1/3 p-2 border rounded";
+  const textareaClassName = "w-2/3 h-48 p-2 border rounded";
+  const inputClassName = "w-2/3 p-2 border rounded";
 
   return (
-    <div className="mb-4">
+    <div className={`mb-4 ${className}`}>
       <label className="block mb-2">{label}</label>
       {textarea ? (
         <textarea
           ref={ref as ForwardedRef<HTMLTextAreaElement>}
-          placeholder={props.placeholder}
+          placeholder={placeholder}
           className={textareaClassName}
         ></textarea>
       ) : (
         <input
           ref={ref as ForwardedRef<HTMLInputElement>}
-          placeholder={props.placeholder}
+          placeholder={placeholder}
           className={inputClassName}
-          type={props.type}
+          type={type}
         ></input>
       )}
     </div>
