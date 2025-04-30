@@ -1,19 +1,12 @@
+import { useContext, useRef } from "react";
 import Input from "./Input";
-import { useRef, forwardRef, ForwardedRef } from "react";
+import { ProjectManagementContext } from "../../store/project-management-context-provider";
 
-interface NewProjectProps {
-  onSaveProject: (projectData: {
-    title: string;
-    description: string;
-    dueDate: string;
-  }) => void;
-  onCancelProject: () => void;
-}
+const NewProject = () => {
+  const { handleSaveProject, handleCancelProject } = useContext(
+    ProjectManagementContext
+  );
 
-const NewProject = forwardRef(function NewProject(
-  { onSaveProject, onCancelProject }: NewProjectProps,
-  ref: ForwardedRef<HTMLDivElement>
-) {
   const titleRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const dueDateRef = useRef<HTMLInputElement>(null);
@@ -39,19 +32,16 @@ const NewProject = forwardRef(function NewProject(
       dueDate: enteredDueDate,
     };
 
-    onSaveProject(newProjectData);
-    console.log("saved newProjectData", newProjectData);
+    handleSaveProject(newProjectData);
+    handleCancelProject();
   };
 
   return (
-    <div
-      ref={ref}
-      className="w-full max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md"
-    >
+    <div className="w-full max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
       <div className="flex justify-end gap-4 mb-6">
         <button
           type="button"
-          onClick={onCancelProject}
+          onClick={handleCancelProject}
           className="px-4 py-2 text-gray-600 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
         >
           Cancel
@@ -92,6 +82,6 @@ const NewProject = forwardRef(function NewProject(
       </div>
     </div>
   );
-});
+};
 
 export default NewProject;

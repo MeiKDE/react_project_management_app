@@ -1,32 +1,13 @@
+import { useContext } from "react";
 import NewTask from "./NewTask";
 import Tasks from "./Tasks";
+import { ProjectManagementContext } from "../../store/project-management-context-provider";
 
-interface ProjectData {
-  id: number;
-  title: string;
-  description: string;
-  dueDate: string;
-}
+const SelectedProject = () => {
+  const { handleDeleteProject, selectedProjectData } = useContext(
+    ProjectManagementContext
+  );
 
-interface SelectedProjectProps {
-  projectsState: {
-    projectIndicator: undefined | null | string;
-    projects: Array<ProjectData & { id: number }>;
-    tasks: Array<{ id: string; text: string; projectId: string }>;
-  };
-  onDeleteProject: (projectId: number) => void;
-  selectedProjectData: (ProjectData & { id: number }) | null;
-  onAddTask: (text: string) => void;
-  onDeleteTask: (taskId: string) => void;
-}
-
-export default function SelectedProject({
-  projectsState,
-  onDeleteProject,
-  selectedProjectData,
-  onAddTask,
-  onDeleteTask,
-}: SelectedProjectProps) {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <header className="flex justify-between items-center mb-8 pb-4 border-b border-gray-200">
@@ -41,7 +22,7 @@ export default function SelectedProject({
         </div>
         <button
           onClick={() =>
-            selectedProjectData && onDeleteProject(selectedProjectData.id)
+            selectedProjectData && handleDeleteProject(selectedProjectData.id)
           }
           className="px-6 py-2 text-red-600 border-2 border-red-600 rounded-md hover:bg-red-600 hover:text-white transition-all duration-200 font-medium"
         >
@@ -60,13 +41,15 @@ export default function SelectedProject({
 
       <section className="space-y-6">
         <div className="bg-white rounded-lg shadow-sm p-6">
-          <NewTask onAddTask={onAddTask} />
+          <NewTask />
         </div>
 
         <div className="bg-white rounded-lg shadow-sm p-6">
-          <Tasks onDeleteTask={onDeleteTask} projectState={projectsState} />
+          <Tasks />
         </div>
       </section>
     </div>
   );
-}
+};
+
+export default SelectedProject;

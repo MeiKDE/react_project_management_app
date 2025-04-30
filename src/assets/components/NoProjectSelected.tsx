@@ -1,10 +1,10 @@
 import Button from "./Button";
+import { useContext } from "react";
+import { ProjectManagementContext } from "../../store/project-management-context-provider";
 
-interface NoProjectProps {
-  onAddProject: () => void;
-}
+const NoProjectSelected = () => {
+  const { handleAddProject } = useContext(ProjectManagementContext);
 
-export default function NoProject({ onAddProject }: NoProjectProps) {
   return (
     <div className="flex flex-col items-center text-center gap-2 py-6">
       <img src="./no-projects.png" alt="no project image" className="w-20" />
@@ -15,8 +15,10 @@ export default function NoProject({ onAddProject }: NoProjectProps) {
       </p>
 
       <div>
-        <Button onClick={onAddProject}>Create New Project</Button>
+        <Button onClick={handleAddProject}>Create New Project</Button>
       </div>
     </div>
   );
-}
+};
+
+export default NoProjectSelected;

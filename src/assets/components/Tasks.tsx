@@ -1,24 +1,17 @@
-interface ProjectData {
-  title: string;
-  description: string;
-  dueDate: string;
-}
+import { useContext } from "react";
+import { ProjectManagementContext } from "../../store/project-management-context-provider";
 
-interface TasksProps {
-  projectState: {
-    projectIndicator: undefined | null | string;
-    projects: Array<ProjectData & { id: number }>;
-    tasks: Array<{ id: string; text: string; projectId: string }>;
-  };
-  onDeleteTask: (taskId: string) => void;
-}
+export default function Tasks() {
+  const { projectsState, handleDeleteTask } = useContext(
+    ProjectManagementContext
+  );
 
-export default function Tasks({ projectState, onDeleteTask }: TasksProps) {
   return (
     <ul className="p-4 rounded-lg bg-white shadow-md">
-      {projectState.tasks
+      {projectsState.tasks
         .filter(
-          (task) => task.projectId === projectState.projectIndicator?.toString()
+          (task) =>
+            task.projectId === projectsState.projectIndicator?.toString()
         )
         .map((task) => (
           <li
@@ -28,7 +21,7 @@ export default function Tasks({ projectState, onDeleteTask }: TasksProps) {
             <span className="text-gray-700">{task.text}</span>
             <button
               className="px-3 py-1 rounded-md text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
-              onClick={() => onDeleteTask(task.id)}
+              onClick={() => handleDeleteTask(task.id)}
             >
               Delete
             </button>

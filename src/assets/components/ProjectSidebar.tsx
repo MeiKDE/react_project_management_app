@@ -1,37 +1,14 @@
 import Button from "./Button";
+import { useContext } from "react";
+import { ProjectManagementContext } from "../../store/project-management-context-provider";
 
-interface ProjectData {
-  title: string;
-  description: string;
-  dueDate: string;
-}
-
-interface ProjectSidebarProps {
-  onAddProject: () => void;
-  projectsState: {
-    projectIndicator: undefined | null | string;
-    projects: Array<ProjectData & { id: number }>;
-    tasks: Array<{ id: string; text: string; projectId: string }>;
-  };
-  onSelectProject: (projectId: number) => void;
-  selectedProjectData: {
-    id: number;
-    title: string;
-    description: string;
-    dueDate: string;
-  } | null;
-}
-
-export default function ProjectSidebar({
-  onAddProject,
-  projectsState,
-  onSelectProject,
-  selectedProjectData,
-}: ProjectSidebarProps) {
-  console.log("check selectedProject function", onSelectProject);
-  console.log("check selectedProjectData", selectedProjectData);
-  console.log("projectsState.projectIndicator", projectsState.projectIndicator);
-  console.log("check projects array", projectsState.projects);
+const ProjectSidebar = () => {
+  const {
+    handleAddProject,
+    handleSelectProject,
+    projectsState,
+    selectedProjectData,
+  } = useContext(ProjectManagementContext);
 
   return (
     <div className="bg-gray-800 p-4 h-full">
@@ -40,14 +17,14 @@ export default function ProjectSidebar({
       </h2>
 
       <div className="flex justify-center my-5">
-        <Button onClick={onAddProject}>+ Add Project </Button>
+        <Button onClick={handleAddProject}>+ Add Project </Button>
       </div>
 
       <ul className="mt-4">
         {projectsState.projects && projectsState.projects.length > 0 ? (
           projectsState.projects.map((project) => (
             <li
-              onClick={() => onSelectProject(project.id)}
+              onClick={() => handleSelectProject(project.id)}
               key={project.id}
               className={`text-white font-sans p-3 my-2 rounded cursor-pointer transition-colors ${
                 selectedProjectData && selectedProjectData.id === project.id
@@ -72,4 +49,6 @@ export default function ProjectSidebar({
       </ul>
     </div>
   );
-}
+};
+
+export default ProjectSidebar;

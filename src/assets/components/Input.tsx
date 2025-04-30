@@ -10,14 +10,7 @@ interface InputProps {
 }
 
 const Input = forwardRef(function Input(
-  {
-    label,
-    placeholder,
-    textarea,
-    type = "text",
-    className = "",
-    ...props
-  }: InputProps,
+  { label, placeholder, textarea, type = "text", className = "" }: InputProps,
   ref: ForwardedRef<HTMLInputElement | HTMLTextAreaElement>
 ) {
   const textareaClassName = "w-2/3 h-48 p-2 border rounded";
