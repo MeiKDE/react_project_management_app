@@ -1,5 +1,5 @@
 import Button from "./Button";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { ProjectManagementContext } from "../../store/project-management-context-provider";
 
 const ProjectSidebar = () => {
@@ -8,7 +8,30 @@ const ProjectSidebar = () => {
     handleSelectProject,
     projectsState,
     selectedProjectData,
+    setProjectsState,
   } = useContext(ProjectManagementContext);
+
+  //When the page loads, check if there’s a saved to-do list in the browser. If yes, load it and use it to show the to-dos.
+  useEffect(() => {
+    const storedProjectsState = localStorage.getItem("projectsState");
+    if (storedProjectsState) {
+      try {
+        const parsedState = JSON.parse(storedProjectsState);
+        if (parsedState && parsedState.projects) {
+          setProjectsState(parsedState);
+        }
+      } catch (error) {
+        console.error("Error parsing stored projects:", error);
+      }
+    }
+  }, []); // Empty dependency array ensures this runs only once on mount
+
+  // Save to localStorage whenever projectsState changes
+  useEffect(() => {
+    if (projectsState && projectsState.projects) {
+      localStorage.setItem("projectsState", JSON.stringify(projectsState));
+    }
+  }, [projectsState]);
 
   return (
     <div className="bg-gray-800 p-4 h-full">

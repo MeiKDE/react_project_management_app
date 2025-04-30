@@ -1,7 +1,7 @@
-import React, { useState, ReactNode, createContext } from "react";
+import React, { useState, useEffect, ReactNode, createContext } from "react";
 import { ProjectData } from "../types";
 
-export interface ProjectManagementContextType {
+export type ProjectManagementContextType = {
   handleAddProject: () => void;
   handleSaveProject: (projectData: Omit<ProjectData, "id">) => void;
   handleCancelProject: () => void;
@@ -15,7 +15,14 @@ export interface ProjectManagementContextType {
     tasks: Array<{ id: string; text: string; projectId: string }>;
   };
   selectedProjectData: (ProjectData & { id: number }) | null;
-}
+  setProjectsState: React.Dispatch<
+    React.SetStateAction<{
+      projectIndicator: undefined | null | string;
+      projects: Array<ProjectData & { id: number }>;
+      tasks: Array<{ id: string; text: string; projectId: string }>;
+    }>
+  >;
+};
 
 export const ProjectManagementContext =
   createContext<ProjectManagementContextType>({
@@ -32,6 +39,7 @@ export const ProjectManagementContext =
       tasks: [],
     },
     selectedProjectData: null,
+    setProjectsState: () => {},
   });
 
 export const ProjectManagementContextProvider = ({
@@ -39,85 +47,113 @@ export const ProjectManagementContextProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const [projectsState, setProjectsState] = useState({
-    projectIndicator: undefined as undefined | null | string,
-    projects: [] as Array<ProjectData & { id: number }>,
-    tasks: [] as Array<{ id: string; text: string; projectId: string }>,
+  const [projectsState, setProjectsState] = useState(() => {
+    // Initialize state from localStorage if available
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("projectsState");
+      if (stored) {
+        try {
+          return JSON.parse(stored);
+        } catch (error) {
+          console.error("Error parsing stored projects:", error);
+        }
+      }
+    }
+    // Return default state if no stored data
+    return { projects: [] };
   });
 
   function handleAddProject() {
     console.log("entering handleAddProject()");
-    setProjectsState((prevState) => ({
-      ...prevState,
-      projectIndicator: null,
-    }));
+    setProjectsState(
+      (prevState: ProjectManagementContextType["projectsState"]) => ({
+        ...prevState,
+        projectIndicator: null,
+      })
+    );
   }
 
   function handleSaveProject(projectData: Omit<ProjectData, "id">) {
-    setProjectsState((prevState) => {
-      const newProject = {
-        ...projectData,
-        id: Math.random(),
-      };
-      return {
-        ...prevState,
-        projectIndicator: undefined,
-        projects: [...prevState.projects, newProject],
-      };
-    });
+    setProjectsState(
+      (prevState: ProjectManagementContextType["projectsState"]) => {
+        const newProject = {
+          ...projectData,
+          id: Math.random(),
+        };
+        return {
+          ...prevState,
+          projectIndicator: undefined,
+          projects: [...prevState.projects, newProject],
+        };
+      }
+    );
   }
 
   function handleCancelProject() {
-    setProjectsState((prevState) => ({
-      ...prevState,
-      projectIndicator: undefined,
-    }));
+    setProjectsState(
+      (prevState: ProjectManagementContextType["projectsState"]) => ({
+        ...prevState,
+        projectIndicator: undefined,
+      })
+    );
   }
 
   function handleSelectProject(projectId: number) {
-    setProjectsState((prevState) => ({
-      ...prevState,
-      projectIndicator: projectId.toString(),
-    }));
+    setProjectsState(
+      (prevState: ProjectManagementContextType["projectsState"]) => ({
+        ...prevState,
+        projectIndicator: projectId.toString(),
+      })
+    );
   }
 
   function handleDeleteProject(projectId: number) {
-    setProjectsState((prevState) => ({
-      ...prevState,
-      projects: prevState.projects.filter(
-        (project) => project.id !== projectId
-      ),
-      projectIndicator: undefined,
-    }));
+    setProjectsState(
+      (prevState: ProjectManagementContextType["projectsState"]) => ({
+        ...prevState,
+        projects: prevState.projects.filter(
+          (project: ProjectData & { id: number }) => project.id !== projectId
+        ),
+        projectIndicator: undefined,
+      })
+    );
   }
 
   function handleAddTask(text: string) {
-    setProjectsState((prevState) => {
-      if (!prevState.projectIndicator) {
-        return prevState;
+    setProjectsState(
+      (prevState: ProjectManagementContextType["projectsState"]) => {
+        if (!prevState.projectIndicator) {
+          return prevState;
+        }
+        const newTask = {
+          id: crypto.randomUUID(),
+          text: text,
+          projectId: prevState.projectIndicator,
+        };
+        return {
+          ...prevState,
+          tasks: [...prevState.tasks, newTask],
+        };
       }
-      const newTask = {
-        id: crypto.randomUUID(),
-        text: text,
-        projectId: prevState.projectIndicator,
-      };
-      return {
-        ...prevState,
-        tasks: [...prevState.tasks, newTask],
-      };
-    });
+    );
   }
 
   function handleDeleteTask(taskId: string) {
-    setProjectsState((prevState) => ({
-      ...prevState,
-      tasks: prevState.tasks.filter((task) => task.id !== taskId),
-    }));
+    setProjectsState(
+      (prevState: ProjectManagementContextType["projectsState"]) => ({
+        ...prevState,
+        tasks: prevState.tasks.filter(
+          (task: { id: string; text: string; projectId: string }) =>
+            task.id !== taskId
+        ),
+      })
+    );
   }
 
   const selectedProjectData =
     projectsState.projects.find(
-      (project) => project.id.toString() === projectsState.projectIndicator
+      (project: ProjectData & { id: number }) =>
+        project.id.toString() === projectsState.projectIndicator
     ) || null;
 
   const ctxValue = {
@@ -130,6 +166,7 @@ export const ProjectManagementContextProvider = ({
     handleDeleteTask,
     projectsState,
     selectedProjectData,
+    setProjectsState,
   };
 
   return (
