@@ -64,7 +64,7 @@ export const ProjectManagementContextProvider = ({
       }
     }
     //If no saved data exists or parsing fails, it falls back to a default state: an object with an empty projects list.
-    return { projects: [] };
+    return { projectIndicator: undefined, projects: [], tasks: [] };
   });
 
   function handleAddProject() {
