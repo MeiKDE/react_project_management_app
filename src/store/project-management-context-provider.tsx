@@ -51,7 +51,7 @@ export const ProjectManagementContextProvider = ({
   const [projectsState, setProjectsState] = useState(() => {
     //This check is to make sure the code is running in the browser, not on the server
     if (typeof window !== "undefined") {
-      //It tries to get previously saved data (like saved projects) from localStorage.
+      //It tries to get PREVIOUSLY saved data (like saved projects) from localStorage.
       const stored = localStorage.getItem("projectsState");
       //If something was found, it tries to parse it (convert from a text string back into an object)
       if (stored) {
