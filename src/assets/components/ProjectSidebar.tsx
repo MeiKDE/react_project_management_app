@@ -11,7 +11,12 @@ const ProjectSidebar = () => {
     setProjectsState,
   } = useContext(ProjectManagementContext);
 
-  //When the page loads, check if there’s a saved to-do list in the browser. If yes, load it and use it to show the to-dos.
+  //This code uses two useEffect hooks to load and save data (a list of projects) from/to the browser's localStorage
+  //This code runs only once when the component first mounts (because of the empty array [] at the end).
+  //It checks if the browser has saved data under the key "projectsState".
+  //If it finds data, it tries to convert it from a string into a real object using JSON.parse.
+  //If successful, it sets the app’s state to that saved data using setProjectsState.
+  //In case the saved data is broken or invalid (like a corrupted string), the code won’t crash — it logs an error instead.
   useEffect(() => {
     const storedProjectsState = localStorage.getItem("projectsState");
     if (storedProjectsState) {
@@ -26,7 +31,8 @@ const ProjectSidebar = () => {
     }
   }, []); // Empty dependency array ensures this runs only once on mount
 
-  // Save to localStorage whenever projectsState changes
+  // This code runs every time projectsState changes.
+  // It takes the updated state and saves it to localStorage (as a string), so it can be restored next time the user visits.
   useEffect(() => {
     if (projectsState && projectsState.projects) {
       localStorage.setItem("projectsState", JSON.stringify(projectsState));

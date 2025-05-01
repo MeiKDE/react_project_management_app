@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ReactNode, createContext } from "react";
+import React, { useState, ReactNode, createContext } from "react";
 import { ProjectData } from "../types";
 
 export type ProjectManagementContextType = {
@@ -47,19 +47,23 @@ export const ProjectManagementContextProvider = ({
 }: {
   children: ReactNode;
 }) => {
+  //When the app starts, try to load saved project data from the browser. If it's there and valid, use it. If not, start fresh with an empty project list.
   const [projectsState, setProjectsState] = useState(() => {
-    // Initialize state from localStorage if available
+    //This check is to make sure the code is running in the browser, not on the server
     if (typeof window !== "undefined") {
+      //It tries to get previously saved data (like saved projects) from localStorage.
       const stored = localStorage.getItem("projectsState");
+      //If something was found, it tries to parse it (convert from a text string back into an object)
       if (stored) {
         try {
           return JSON.parse(stored);
+          //If parsing fails (maybe the stored data is corrupted), it logs an error and moves on.
         } catch (error) {
           console.error("Error parsing stored projects:", error);
         }
       }
     }
-    // Return default state if no stored data
+    //If no saved data exists or parsing fails, it falls back to a default state: an object with an empty projects list.
     return { projects: [] };
   });
 
